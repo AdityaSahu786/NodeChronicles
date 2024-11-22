@@ -1,0 +1,19 @@
+### TEST GET / WEBSITE
+
+GET http://localhost:8383
+
+### TEST GET /dashboard WEBSITE
+
+GET http://localhost:8383/dashboard
+
+### DATA ENDPOINT
+
+GET http://localhost:8383/api/data
+
+### DATA ENDPOINT FOR ADDDING A USER
+
+POST http://localhost:8383/api/data
+
+{
+    "name": "gilgamesh"
+}
