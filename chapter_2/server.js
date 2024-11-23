@@ -6,10 +6,10 @@ const express = require("express");
 const app = express()
 const PORT = 8383
 
-let data = {
-    name: 'James'
+let data = ['james']
 
-}
+// Middleware
+app.use(express.json());
 
 // HTTP VERBS && Routes (or paths)
 // The methods informs the nature of request and the route is a further 
@@ -20,20 +20,29 @@ let data = {
 // Type 1 - Website endpoints(these endpoints are for sending back html and they typically 
 // come when a user enters a url in a browser)
 app.get('/', (req, res) => {
-
+     console.log('User requested the home page')
     // this is endpoint number 1
     console.log("Yay i hit an endpoint!", req.method)
     res.send(`<body style="background:pink;color: "blue;">
         <h1>DATA:</h1>
             <p>${JSON.stringify(data)}</p>
+            <a href="/dashboard">Dashboard</a>
         </body>
+        <script>console.log('This is my script')</script>
         `)
 
 })
 
 app.get('/dashboard', (req, res) => {
     console.log('Ohh now I hit the /dashboard endpoint')
-    res.send('hiii')
+    res.send(`
+        <body>
+        <h1>dashboard</h1>
+        <a href="/">Home</a>
+        </body>
+        
+        
+        `)
 })
 
 // Type 2 - API endpoints (non visual)
@@ -42,7 +51,7 @@ app.get('/dashboard', (req, res) => {
 
 app.get('/api/data', (req, res) => {
     console.log('This one was for data')
-    res.send(data)
+    res.status(599).send(data)
 })
 
 app.post('/api/data', (req, res) => {
@@ -52,7 +61,15 @@ app.post('/api/data', (req, res) => {
     // their browser is wired up to send out a network request to the server to
     // handle that action
     const newEntry = req.body
-    res.sendStatus(701)
+    console.log(newEntry)
+    data.push(newEntry.name)
+    res.sendStatus(201)
+})
+
+app.delete('/api/data', (req, res) => {
+  data.pop()
+  console.log('We deleted the element off the end of the array')
+  res.sendStatus(200)
 })
 
 app.listen(PORT, () => console.log(`Server has started on: ${PORT}`))
