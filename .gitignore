@@ -1,2 +1,4 @@
 node_modules/
 chapter_2/node_modules/
+chapter_3/node_modules/
+chapter_3/.env
