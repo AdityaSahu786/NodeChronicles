@@ -23,7 +23,7 @@ router.post('/register', (req, res) => {
   try {
     const insertUser = db.prepare(`INSERT INTO users (username, password)
         VALUES (?, ?)`)
-        const result = insertUser(username, hashedPassword)
+        const result = insertUser.run(username, hashedPassword)
 
         // now that we have a user, I want to add their first todo for them
         const defaultTodo = `Hello :) Add your first todo!`
@@ -32,9 +32,11 @@ router.post('/register', (req, res) => {
             insertTodo.run(result.lastInsertRowid, defaultTodo)
 
             // create a token 
-            const token = jwt.sign({id: result.lastInsertRowid}, process.env.JWT_SECRET, { expiresIn: '24h'})
+            const token = jwt.sign({id: result.lastInsertRowid}, process.env.
+              JWT_SECRET, { expiresIn: '24h'})
+              res.json({ token })
   } catch (err) {
-    console.log(err.method)
+    console.log(err.message)
     res.sendStatus(503)
   }
   
